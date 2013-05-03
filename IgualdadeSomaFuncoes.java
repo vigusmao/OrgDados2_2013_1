@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -11,15 +12,13 @@ import java.util.Random;
  */
 public class IgualdadeSomaFuncoes {
 
-    private static int TAMANHO_HASH = 100000;
-    private static int IMAGEM_F = 1000;
+    public static int N = 100;
+    private static int IMAGEM_F = 5000000;
 
-    public static int N = 5000;
-
-    private static HashMap<Integer,Integer> tabela_f;
+    private static HashMap<Integer,Integer> tabela_f = new HashMap<Integer, Integer>(N);
 
     static void popula_f() {
-        for (int i = 1; i <= TAMANHO_HASH; i++) {
+        for (int i = 1; i <= N; i++) {
            tabela_f.put(i, new Long(Math.round((-1 + Math.random() * 2) * IMAGEM_F)).intValue());
         }
     }
@@ -36,8 +35,6 @@ public class IgualdadeSomaFuncoes {
             this.c = c;
         }
     }
-
-
 
     public static void main(String[] args) {
 
@@ -59,5 +56,21 @@ public class IgualdadeSomaFuncoes {
                 }
             }
         }
+
+        int total = 0;
+        for (Integer r : mapa.keySet()) {
+            ArrayList<Tripla> lista = mapa.get(r);
+            int x = lista.size();
+            if (x > 1) {
+                total += x * (x - 1) / 2;
+                for (Tripla tripla : lista) {
+                    System.out.println(String.format("f(%d) + f(%d) + f(%d) = %d",
+                            tripla.a, tripla.b, tripla.c,
+                            f(tripla.a) + f(tripla.b) + f(tripla.c)));
+                }
+            }
+        }
+
+        System.out.println("\nTotal = " + Integer.valueOf(total).toString() + " soluções não-triviais.");
     }
 }
